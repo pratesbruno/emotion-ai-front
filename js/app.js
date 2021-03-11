@@ -1,5 +1,6 @@
 const video = document.getElementById("cam_input"); // let video ...
-const annCanvas = document.getElementById('annCanvas')
+const annCanvas1 = document.getElementById('annCanvas1')
+const annCanvas2 = document.getElementById('annCanvas2')
 const txtCanvas = document.getElementById('txtCanvas')
 
 function openCvReady() {
