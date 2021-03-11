@@ -1,10 +1,7 @@
-function annotateShapes() {
+function annotateShapes(annCanvas, crd, emotion, color) {
   let s = new CanvasState(annCanvas);
-  s.addShape(new Shape(40, 40, 30, 30,'rgba(40,40,250,.2)', "event"));
-  s.addShape(new Shape(50, 10, 30, 30,'rgba(250,40,40,.2)', "date"));
-  s.addShape(new Shape(100, 10, 30, 30,'rgba(40,250,40,.2)', "time"));
+  s.addShape(new Shape(crd[0], crd[1], crd[2], crd[3], color, emotion));
 }
-  // ==============================================================
 
   function Shape(x, y, w, h, fill, key) {
    // This is a very simple and unsafe constructor. All we're doing is checking if the values exist.
@@ -25,6 +22,7 @@ function annotateShapes() {
   Shape.prototype.draw = function(ctx) {
     ctx.fillStyle = this.fill;
     ctx.fillRect(this.x, this.y, this.w, this.h);
+    ctx.font = '24px Arial Black';
     ctx.fillText(this.key, this.x, this.y);
   }
 
@@ -59,7 +57,7 @@ function annotateShapes() {
 
    this.selectionColor = '#CC0000';
    this.selectionWidth = 2;
-   this.interval = 30;
+   this.interval = 1;
    setInterval(function() { myState.draw(); }, myState.interval);
   }
 

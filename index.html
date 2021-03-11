@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emotion Ai</title>
     <link rel="stylesheet" type="text/css" href="index.css">
-    <script async src="js/video.js"></script>
+    <script async src="js/app.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/canvas.js"></script>
     <script src="js/model.js"></script>
@@ -14,13 +14,14 @@
 </head>
 <body>
     <h1>Emotion Ai - Facial Recognition</h1>
-    <video id="cam_input" height="440" width="640"></video>
-    <!-- <div class="outsideWrapper">
+    <!-- <video id="cam_input" height="440" width="640"></video> -->
+    <div class="outsideWrapper">
         <div class="insideWrapper">
           <video class="coveredImage" id="cam_input" height="480" width="640"></video>
-          <canvas class="coveringCanvas" id="annCanvas" height="480" width="640"></canvas>
+          <canvas style="display: none;" class="coveringCanvas" id="annCanvas" height="480" width="640"></canvas>
+          <canvas class="coveringCanvas" id="txtCanvas" height="480" width="640"></canvas>
         </div>
-    </div> -->
+    </div>
     <p>You are <spam id="prediction"></spam>
     </p>
     <canvas id="canvas_output"></canvas>
