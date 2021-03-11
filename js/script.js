@@ -2,7 +2,7 @@
 let model = true
 let face = false
 let video = true
-
+let emotion = "No emotion detected"
 let prediction_dict = {
     0: "Sad",
     1: "Happy",
@@ -47,12 +47,15 @@ function openCvReady() {
             }
             for (let i = 0; i < faces.size(); ++i) {
                 //let face = faces.get(i);
+                console.log(faces.size(), i)
                 face = faces.get(i);
                 let point1 = new cv.Point(face.x, face.y);
                 let point2 = new cv.Point(face.x + face.width, face.y + face.height);
                 cv.rectangle(dst, point1, point2, [255, 0, 0, 255]);
+                //take_snapshot(face);
             }
             cv.imshow("canvas_output", dst);
+
 
             take_snapshot(face)
 
@@ -84,6 +87,7 @@ function take_snapshot(face) {
         let canvas2 = document.getElementById("canvas_snapout")
         const dataURL2 = canvas2.toDataURL();
         get_prediction(dataURL2)
+        //console.log(face.x, face.y, face.x + face.width, face.y + face.height, emotion)
     }
     else {
         console.log('no face')
@@ -101,7 +105,9 @@ function get_prediction(dataURL) {
         let indexMax = indexOfMax(prediction.dataSync())
         emotion = prediction_dict[indexMax]
         document.getElementById("prediction").innerText = emotion
-        prediction.print()
+        console.log(emotion)
+        console.log('faces and emotion array:')
+        console.log(face.x, face.y, face.x + face.width, face.y + face.height, emotion)
     });
 }
 
