@@ -4,20 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emotion Ai</title>
-    <script async src="js/opencv.js" onload="openCvReady();"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script async src="js/video.js"></script>
     <script src="js/utils.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/model.js"></script>
+    <script async src="js/opencv.js" onload="openCvReady();"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js" type="text/javascript" onload="loadModel();"></script>
 </head>
-
 <body>
     <h1>Emotion Ai - Facial Recognition</h1>
-    <input id="clickMe" type="button" value="Load Model" />
     <video id="cam_input" height="440" width="640"></video>
+    <!-- <div class="outsideWrapper">
+        <div class="insideWrapper">
+          <video class="coveredImage" id="cam_input" height="480" width="640"></video>
+          <canvas class="coveringCanvas" id="annCanvas" height="480" width="640"></canvas>
+        </div>
+    </div> -->
     <p>You are <spam id="prediction"></spam>
     </p>
     <canvas id="canvas_output"></canvas>
     <canvas id="canvas_snapout"></canvas>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js" type="text/javascript"></script>
-<script src="js/script.js" type="text/javascript"></script>
+
 
 </html>
