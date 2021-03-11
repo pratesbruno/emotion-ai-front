@@ -22,11 +22,11 @@ function get_prediction(dataURL) {
         let prediction = model.predict(tensor);
         let indexMax = indexOfMax(prediction.dataSync())
         emotion = prediction_dict[indexMax]
-        document.getElementById("prediction").innerText = emotion
         coordinates = [ face.x, face.y, face.width, face.height ]
-        corner = [ 30, 40, 0, 0 ]
-        annotateShapes(annCanvas, coordinates, emotion, 'rgba(40,40,250,.2)')
-        annotateShapes(txtCanvas, corner, emotion, 'rgba(40,40,250)')
+        cornerCoordinates = [ 30, 40, 0, 0 ]
+        annotateShapes(annCanvas1, coordinates, emotion, 'rgba(40,40,250,.2)')
+        annotateShapes(annCanvas2, coordinates, emotion, 'rgba(40,40,250,.2)')
+        annotateShapes(txtCanvas, cornerCoordinates, emotion, 'rgba(40,40,250)')
     });
 }
 
