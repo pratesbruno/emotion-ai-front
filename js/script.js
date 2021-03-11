@@ -52,12 +52,28 @@ function openCvReady() {
                 let point1 = new cv.Point(face.x, face.y);
                 let point2 = new cv.Point(face.x + face.width, face.y + face.height);
                 cv.rectangle(dst, point1, point2, [255, 0, 0, 255]);
+
+                if (face) {
+                    let src2 = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+                    let rect2 = new cv.Rect(face.x, face.y, face.width, face.height)
+                    cropped = src2.roi(rect2);
+                    console.log(cropped)
+                    cropped_data = cropped.data
+                    console.log(cropped_data)
+                    console.log(tf.image.resizeBilinear(cropped_data, [48, 48]))
+                    console.log(tf.tensor(cropped_data))
+                    //console.log(cropped.data)
+                    cv.imshow("canvas_snapout", cropped);
+                    let canvas2 = document.getElementById("canvas_snapout")
+                    const dataURL2 = canvas2.toDataURL();
+                    get_prediction(dataURL2)
+                }
                 //take_snapshot(face);
             }
             cv.imshow("canvas_output", dst);
 
 
-            take_snapshot(face)
+            //take_snapshot(face)
 
             let delay = 10000 / FPS - (Date.now() - begin);
             setTimeout(processVideo, delay);
@@ -83,6 +99,7 @@ function take_snapshot(face) {
         let src2 = new cv.Mat(video.height, video.width, cv.CV_8UC4);
         let rect2 = new cv.Rect(face.x, face.y, face.width, face.height)
         cropped = src2.roi(rect2);
+
         cv.imshow("canvas_snapout", cropped);
         let canvas2 = document.getElementById("canvas_snapout")
         const dataURL2 = canvas2.toDataURL();
