@@ -51,9 +51,11 @@ function openCvReady() {
       }
 
       function take_snapshot(face) {
+        if (face) {
             let cropped = gray.roi(face);
             let tensor = tf.tensor(cropped.data, [face.width, face.height])
             get_prediction(tensor)
+          }
         }
 
     // schedule first one.
