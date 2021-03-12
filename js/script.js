@@ -34,7 +34,7 @@ function openCvReady() {
         utils.createFileFromUrl(faceCascadeFile, faceCascadeFile, () => {
             classifier.load(faceCascadeFile); // in the callback, load the cascade from file 
         });
-        const FPS = 24;
+        const FPS = 120;
         function processVideo() {
             let begin = Date.now();
             cap.read(src);
@@ -57,12 +57,14 @@ function openCvReady() {
                     let src2 = new cv.Mat(video.height, video.width, cv.CV_8UC4);
                     let rect2 = new cv.Rect(face.x, face.y, face.width, face.height)
                     cropped = src2.roi(rect2);
-                    console.log(cropped)
-                    cropped_data = cropped.data
-                    console.log(cropped_data)
-                    console.log(tf.image.resizeBilinear(cropped_data, [48, 48]))
-                    console.log(tf.tensor(cropped_data))
-                    //console.log(cropped.data)
+
+                    /*                     console.log(cropped)
+                                        cropped_data = cropped.data
+                                        console.log(cropped_data)
+                                        console.log(tf.image.resizeBilinear(cropped_data, [48, 48]))
+                                        console.log(tf.tensor(cropped_data)) */
+
+
                     cv.imshow("canvas_snapout", cropped);
                     let canvas2 = document.getElementById("canvas_snapout")
                     const dataURL2 = canvas2.toDataURL();
@@ -75,7 +77,7 @@ function openCvReady() {
 
             //take_snapshot(face)
 
-            let delay = 10000 / FPS - (Date.now() - begin);
+            let delay = 10 / FPS - (Date.now() - begin);
             setTimeout(processVideo, delay);
         }
         // schedule first one.
