@@ -13,11 +13,11 @@ const colors_dict = {
     "Surprised": 'rgba(0,0,250)',
     "Neutral": 'rgba(150,150,150)'
 };
+
 //Function to load model
 async function loadModel() {
     console.log("loading model....");
     model = await tf.loadLayersModel('saved_models/7813-bruno/model.json');
-    console.log(model.summary());
 }
 
 // Function to get prediction from a dataURL format

@@ -38,7 +38,6 @@ function openCvReady() {
                 console.log(err);
             }
             for (let i = 0; i < faces.size(); ++i) {
-                //let face = faces.get(i);
                 face = faces.get(i);
                 let point1 = new cv.Point(face.x, face.y);
                 let point2 = new cv.Point(face.x + face.width, face.y + face.height);
@@ -60,9 +59,6 @@ function openCvReady() {
                 let canvas2 = document.getElementById("canvas_snapout")
                 const dataURL2 = canvas2.toDataURL();
                 get_prediction(dataURL2)
-            }
-            else {
-                console.log('no face')
             }
         }
         // schedule first one.
