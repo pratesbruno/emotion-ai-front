@@ -1,16 +1,24 @@
 let model = true
+
 const prediction_dict = {
     0: "Sad",
     1: "Happy",
     2: "Surprised",
     3: "Neutral"
 };
+
+const colors_dict = {
+    "Sad": 'rgba(250,20,60)',
+    "Happy": 'rgba(0,170,0)',
+    "Surprised": 'rgba(0,0,250)',
+    "Neutral": 'rgba(150,150,150)'
+};
+
 //Function to load model
 async function loadModel() {
     console.log("loading model....");
     model = await tf.loadLayersModel('saved_models/7813-bruno/model.json');
-    console.log(model.summary());
-  }
+}
 
 function get_prediction(tensor) {
   tensor = preprocess_tensor(tensor)
