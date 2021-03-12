@@ -63,7 +63,6 @@ function CanvasState(canvas) {
 
 CanvasState.prototype.addShape = function(shape) {
  this.shapes.push(shape);
- console.log(this.shapes)
  this.valid = false;
 }
 
