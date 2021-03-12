@@ -1,4 +1,5 @@
 let model = true
+
 const prediction_dict = {
     0: "Sad",
     1: "Happy",
@@ -6,11 +7,11 @@ const prediction_dict = {
     3: "Neutral"
 };
 
-const color_dict = {
-    "Sad": 'rgba(250,0,0)',
-    "Happy": 'rgba(0,250,0)',
+const colors_dict = {
+    "Sad": 'rgba(250,20,60)',
+    "Happy": 'rgba(34,250,34)',
     "Surprised": 'rgba(0,0,250)',
-    "Neutral": 'rgba(50,50,50)'
+    "Neutral": 'rgba(150,150,150)'
 };
 
 //Function to load model
@@ -28,17 +29,13 @@ function get_prediction(dataURL) {
         let resized = tf.image.resizeBilinear(a, [48, 48]);
         let tensor = resized.expandDims(0);
         let prediction = model.predict(tensor);
-        let indexMax = indexOfMax(prediction.dataSync());
-
-        emotion = prediction_dict[indexMax];
-        coordinates = [face.x, face.y, face.width, face.height];
-        cornerCoordinates = [30, 40, 0, 0];
-        annotateShapes(annCanvas1, coordinates, emotion, 'rgba(40,40,250,.2)');
-        annotateShapes(annCanvas2, coordinates, emotion, 'rgba(40,40,250,.2)');
-        color = color_dict[emotion];
-        // Coordinates to make emotion follow face - IT LAGS
-        //let new_coords = [Math.max(0, coordinates[0] - 20), Math.min(coordinates[1] - 75), 0, 0]
-        annotateShapes(txtCanvas, cornerCoordinates, emotion, color);
+        let indexMax = indexOfMax(prediction.dataSync())
+        emotion = prediction_dict[indexMax]
+        coordinates = [face.x, face.y, face.width, face.height]
+        cornerCoordinates = [30, 40, 0, 0]
+        annotateShapes(annCanvas1, coordinates, emotion, 'rgba(40,40,250,.2)')
+        annotateShapes(annCanvas2, coordinates, emotion, 'rgba(40,40,250,.2)')
+        annotateShapes(txtCanvas, cornerCoordinates, emotion, colors_dict[emotion])
     });
 }
 

@@ -2,6 +2,7 @@ const video = document.getElementById("cam_input"); // let video ...
 const annCanvas1 = document.getElementById('annCanvas1')
 const annCanvas2 = document.getElementById('annCanvas2')
 const txtCanvas = document.getElementById('txtCanvas')
+let face = false
 
 function openCvReady() {
     cv['onRuntimeInitialized'] = () => {
@@ -42,9 +43,10 @@ function openCvReady() {
                 let point1 = new cv.Point(face.x, face.y);
                 let point2 = new cv.Point(face.x + face.width, face.y + face.height);
                 cv.rectangle(dst, point1, point2, [255, 0, 0, 255]);
-                take_snapshot(face)
+
             }
             cv.imshow("canvas_output", dst);
+            take_snapshot(face)
 
             let delay = 10000 / FPS - (Date.now() - begin);
             setTimeout(processVideo, delay);

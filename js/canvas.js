@@ -22,7 +22,7 @@ function SetColor(key) {
 Shape.prototype.draw = function (ctx) {
     ctx.fillStyle = this.fill;
     ctx.fillRect(this.x, this.y, this.w, this.h);
-    ctx.font = '24px Arial Black';
+    ctx.font = '30px Arial Black';
     ctx.fillText(this.key, this.x, this.y);
 }
 
