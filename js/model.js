@@ -17,21 +17,16 @@ const color_dict = {
 async function loadModel() {
     console.log("loading model....");
     model = await tf.loadLayersModel('saved_models/7813-bruno/model.json');
-    console.log(model.summary());
 }
 
 // Function to get prediction from a dataURL format
 function get_prediction(dataURL) {
     convertURIToImageData(dataURL).then(function (imageData) {
 
-        /*         let a = tf.browser.fromPixels(imageData, 1)
-                a = a.div(255)
-                let resized = tf.image.resizeBilinear(a, [48, 48]);
-                let tensor = resized.expandDims(0);
-                let prediction = model.predict(tensor);
-                let indexMax = indexOfMax(prediction.dataSync()) */
-
-        let tensor = tf.image.resizeBilinear(tf.browser.fromPixels(imageData, 1).div(255), [48, 48]).expandDims(0)
+        let a = tf.browser.fromPixels(imageData, 1)
+        a = a.div(255)
+        let resized = tf.image.resizeBilinear(a, [48, 48]);
+        let tensor = resized.expandDims(0);
         let prediction = model.predict(tensor);
         let indexMax = indexOfMax(prediction.dataSync());
 
@@ -40,7 +35,6 @@ function get_prediction(dataURL) {
         cornerCoordinates = [30, 40, 0, 0];
         annotateShapes(annCanvas1, coordinates, emotion, 'rgba(40,40,250,.2)');
         annotateShapes(annCanvas2, coordinates, emotion, 'rgba(40,40,250,.2)');
-
         color = color_dict[emotion];
         // Coordinates to make emotion follow face - IT LAGS
         //let new_coords = [Math.max(0, coordinates[0] - 20), Math.min(coordinates[1] - 75), 0, 0]

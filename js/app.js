@@ -59,9 +59,6 @@ function openCvReady() {
                 const dataURL2 = canvas2.toDataURL();
                 get_prediction(dataURL2)
             }
-            else {
-                console.log('no face')
-            }
         }
         // schedule first one.
         setTimeout(processVideo, 0);
