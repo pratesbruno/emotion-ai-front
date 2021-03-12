@@ -55,8 +55,8 @@ function openCvReady() {
             let tensor = tf.tensor(cropped.data, [face.width, face.height])
             get_prediction(tensor)
         }
-      }
-  // schedule first one.
-  setTimeout(processVideo, 0);
-};
 
+    // schedule first one.
+    setTimeout(processVideo, 0);
+  };
+}
