@@ -16,28 +16,45 @@ const colors_dict = {
 
 //Function to load model
 async function loadModel() {
-    console.log("loading model....");
-    model = await tf.loadLayersModel('saved_models/7813-bruno/model.json');
+  console.log("loading model....");
+  model = await tf.loadLayersModel('saved_models/7813-bruno/model.json');
 }
 
-function get_prediction(tensor) {
-  tensor = preprocess_tensor(tensor)
-  let prediction = model.predict(tensor);
-  let indexMax = indexOfMax(prediction.dataSync())
-  emotion = prediction_dict[indexMax]
-  coordinates = [ face.x, face.y, face.width, face.height ]
-  cornerCoordinates = [ 30, 40, 0, 0 ]
+function annotateEmotionShapes(face){
+  let emotion = get_prediction(face)
+  console.log(emotion)
+  coordinates = [face.x, face.y, face.width, face.height]
+  cornerCoordinates = [30, 40, 0, 0]
   annotateShapes(annCanvas1, coordinates, emotion, 'rgba(40,40,250,.2)')
   annotateShapes(annCanvas2, coordinates, emotion, 'rgba(40,40,250,.2)')
-  annotateShapes(txtCanvas, cornerCoordinates, emotion, 'rgba(40,40,250)')
+  annotateShapes(txtCanvas, cornerCoordinates, emotion, colors_dict[emotion])
 }
 
-function preprocess_tensor(tsr){
-  tsr = tsr.div(255)
-  tsr = tf.expandDims(tsr, axis=0);
-  tsr = tf.expandDims(tsr, axis=-1);
-  tsr = tf.image.resizeBilinear(tsr, [48, 48]);
-  return tsr
+function get_prediction(face) {
+  snapImageData(face).then(function (imgData) {
+    let tensor = prepare_tensor(imgData);
+    console.log(tensor.shape)
+    let prediction = model.predict(tensor);
+    let indexMax = indexOfMax(prediction.dataSync())
+    emotion = prediction_dict[indexMax]
+    console.log(emotion)
+    return emotion
+  });
+}
+
+function snapImageData(face) {
+  return new Promise(function (resolve, reject) {
+    if (face == null) return reject();
+    context = outputCanvas.getContext('2d')
+    resolve(context.getImageData(face.x, face.y, face.width, face.height));
+  });
+}
+
+function prepare_tensor(pixel_array) {
+  let a = tf.browser.fromPixels(pixel_array, 1)
+  let resized = tf.image.resizeBilinear(a.div(255), [48, 48]);
+  tensor = resized.expandDims(0);
+  return tensor
 }
 
 // Function to get the index of the maximum value of an array
