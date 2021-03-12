@@ -49,7 +49,6 @@
 </style>
 
 <body>
-
     <!-- Navbar -->
     <div class="w3-top">
         <div class="w3-bar w3-red w3-card w3-left-align w3-large">
@@ -80,7 +79,7 @@
     <div class="w3-row-padding w3-padding-64 w3-container" id='webcam'>
         <div class="w3-content">
             <div class="w3-twothird">
-                <h1>Hey thats you!</h1>
+                <h1>How are you feeling?</h1>
                 <div class="outsideWrapper">
                     <div class="insideWrapper">
                         <video class="coveredImage" id="cam_input" height="480" width="640"></video>
@@ -89,52 +88,56 @@
                         <canvas class="coveringCanvas" id="txtCanvas" height="480" width="640"></canvas>
                     </div>
                 </div>
-                <h5 class="w3-padding-32">Accessing the webcam stream with javascript</h5>
-                <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia deserunt.</p>
+                <h5 class="w3-padding-12">Realtime predictions on facial expressions</h5>
+                <p class="w3-text-grey">On the top left corner you can see a real time prediction of your predominant
+                    emotion. To achieve that, we built a machine learning model that uses your facial expressions to
+                    predict
+                    one of the following four emotions - neutral, happy, sad or suprised. We started with a
+                    convolutional
+                    neural network with 4 convolutional and maxpooling layers and added dropout layers for
+                    regularization purposes. Further, we trained the model on the FER2013 and MMA datasets from Kaggle.
+                    To
+                    enhance accuracy we used data augmentation techniques to artificially create more training data.</p>
             </div>
         </div>
     </div>
 
     <!-- Second Grid -->
-    <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container" id='pred'>
+    <div class="w3-row-padding w3-light-grey w3-padding-32 w3-container" id='pred'>
         <div class="w3-content">
             <div class="w3-twothird">
-                <h1>Predicting emotions</h1>
+                <h1>Face detection</h1>
                 <div class="outsideWrapper">
                     <div class="insideWrapper">
                         <canvas class="coveredImage" id="canvas_output" height="480" width="640"></canvas>
                         <canvas class="coveringCanvas" id="annCanvas2" height="480" width="640"></canvas>
                     </div>
                 </div>
-                <canvas id="canvas_snapout" height="200", width="200"></canvas>
-                <canvas id="canvas_snapout1" height="200", width="200"></canvas>
 
-                <h5 class="w3-padding-32">Using opencv and tensorflow js</h5>
-                <p class="w3-text-grey">Now based on your webcam stream, we extract faces with a cascade sheet from the
-                    opencv library. This picture gets transformed
-                    into a model in tensorflow js. We built our own Convolutional neural network with 4 convolutional
-                    and maxpooling layers and added dropout layers.
-                    Further we trained the model on the fer2013 and mma dataset from kaggle. To enhance accuracy we used
-                    data augmentation technique to virtually create more trainings data.
-                    Just hit the load button and you will see your emotion recognition in realtime. </p>
+                <canvas style="display:none;" id="canvas_snapout"></canvas>
+                <h5 class="w3-padding-12">We used OpenCV and TensorFlow.js to realize this project</h5>
+                <p class="w3-text-grey">Based on your webcam stream, we extract faces with a cascade sheet. The
+                    extracted image
+                    is transformed to fit
+                    into our convolutional neural network, which we pretrained using Python. The saved pretrained model
+                    was transformed to a json file, which allowed us to
+                    use it in TensorFlow.js. TensorFlow.js gets executed directly your browser for faster predictions.
+                </p>
             </div>
         </div>
     </div>
 
     <!-- ThirdGrid -->
-    <div class="w3-row-padding w3-padding-64 w3-container" id='aboutus'>
+    <div class="w3-row-padding w3-padding-32 w3-container" id='aboutus'>
         <div class="w3-content">
             <div class="w3-twothird">
                 <h1>About us</h1>
-                <h5 class="w3-padding-32">Our development team</h5>
+                <h5 class="w3-padding-12">Our development team</h5>
 
-                <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia deserunt.</p>
+                <p class="w3-text-grey">We created this facial emotion recognition system as our final project for the
+                    Le Wagon Data Science Bootcamp in Rio de Janeiro. The team members are
+                    Richard van den Broek, Ricardo Marra, Bruno Prates and David Venzke.</p>
+                <img src='Team.jpg' class="responsivepic" />
             </div>
         </div>
     </div>

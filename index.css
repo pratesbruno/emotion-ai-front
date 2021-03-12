@@ -18,3 +18,8 @@
 #title1{
     font-weight: bold;
 }
+
+.responsivepic {
+    width: 100%;
+    height: auto;
+  }
