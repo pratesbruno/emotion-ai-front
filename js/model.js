@@ -9,7 +9,7 @@ const prediction_dict = {
 
 const colors_dict = {
     "Sad": 'rgba(250,20,60)',
-    "Happy": 'rgba(34,250,34)',
+    "Happy": 'rgba(0,170,0)',
     "Surprised": 'rgba(0,0,250)',
     "Neutral": 'rgba(150,150,150)'
 };
