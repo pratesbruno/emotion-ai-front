@@ -20,9 +20,7 @@ async function loadModel() {
   model = await tf.loadLayersModel('saved_models/7813-bruno/model.json');
 }
 
-function annotateEmotionShapes(face){
-  let emotion = get_prediction(face)
-  console.log(emotion)
+function annotateEmotionShapes(emotion){
   coordinates = [face.x, face.y, face.width, face.height]
   cornerCoordinates = [30, 40, 0, 0]
   annotateShapes(annCanvas1, coordinates, emotion, 'rgba(40,40,250,.2)')
@@ -37,8 +35,7 @@ function get_prediction(face) {
     let prediction = model.predict(tensor);
     let indexMax = indexOfMax(prediction.dataSync())
     emotion = prediction_dict[indexMax]
-    console.log(emotion)
-    return emotion
+    annotateEmotionShapes(emotion)
   });
 }
 

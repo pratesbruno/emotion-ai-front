@@ -61,7 +61,6 @@ function CanvasState(canvas) {
     setInterval(function () { myState.draw(); }, myState.interval);
 }
 
-
 CanvasState.prototype.addShape = function (shape) {
     this.shapes.push(shape);
     this.valid = false;

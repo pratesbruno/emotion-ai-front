@@ -45,47 +45,13 @@ function openCvReady() {
             let point1 = new cv.Point(face.x, face.y);
             let point2 = new cv.Point(face.x + face.width, face.y + face.height);
             cv.rectangle(dst, point1, point2, [255, 0, 0, 255]);
-            annotateEmotionShapes(face)
+            get_prediction(face)
         }
         cv.imshow("canvas_output", dst);
-        // take_snapshot(face)
 
         let delay = 10000 / FPS - (Date.now() - begin);
         setTimeout(processVideo, delay);
       }
-      function take_snapshot(face) {
-          if (face) {
-              // let rect = new cv.Rect(face.x, face.y, face.width, face.height)
-              // cropped = src.roi(rect);
-              // cv.imshow("canvas_snapout", cropped);
-              // let canvas2 = document.getElementById("canvas_snapout")
-              // let canvas3 = document.getElementById("canvas_snapout1")
-
-              // let context = outputCanvas.getContext('2d')
-
-              // gray_crop = new cv.Mat();
-              // cv.cvtColor(cropped, gray_crop, cv.COLOR_RGBA2GRAY);
-              // // let tensor = tf.tensor(gray_crop.data)
-              // tf.browser.toPixels(tensor, canvas3)
-              // console.log('after creation')
-              // console.log(tensor.shape)
-              // console.log(tensor.dataSync())
-              annotateEmotionShapes(face)
-              // console.log('-------gray------')
-              // console.log(gray.data)
-              // console.log(Math.max(gray.data))
-          }
-      }
-
-      // function take_snapshot(face) {
-      //   if (face) {
-      //       let cropped = src.roi(face);
-      //       cv.cvtColor(cropped, cropped, cv.COLOR_RGBA2GRAY);
-      //       let tensor = tf.tensor(cropped.data, [face.width, face.height])
-      //       get_prediction(tensor)
-      //     }
-      //   }
-    // schedule first one.
     setTimeout(processVideo, 0);
   }
 };
