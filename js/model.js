@@ -16,47 +16,55 @@ const colors_dict = {
 
 //Function to load model
 async function loadModel() {
-    console.log("loading model....");
-    model = await tf.loadLayersModel('saved_models/7813-bruno/model.json');
+  let begin = Date.now();
+  console.log("loading model....");
+  model = await tf.loadLayersModel('saved_models/7813-bruno/model.json');
+  console.log(`exec time ${Date.now() - begin} -- loadModel`)
 }
 
-// Function to get prediction from a dataURL format
-function get_prediction(dataURL) {
-    convertURIToImageData(dataURL).then(function (imageData) {
-        let a = tf.browser.fromPixels(imageData, 1)
-        a = a.div(255)
-        let resized = tf.image.resizeBilinear(a, [48, 48]);
-        let tensor = resized.expandDims(0);
-        let prediction = model.predict(tensor);
-        let indexMax = indexOfMax(prediction.dataSync())
-        emotion = prediction_dict[indexMax]
-        coordinates = [face.x, face.y, face.width, face.height]
-        cornerCoordinates = [30, 40, 0, 0]
-        annotateShapes(annCanvas1, coordinates, emotion, 'rgba(40,40,250,.2)')
-        annotateShapes(annCanvas2, coordinates, emotion, 'rgba(40,40,250,.2)')
-        annotateShapes(txtCanvas, cornerCoordinates, emotion, colors_dict[emotion])
-    });
+function annotateEmotionShapes(face, emotion){
+  let begin = Date.now();
+  coordinates = [face.x, face.y, face.width, face.height]
+  cornerCoordinates = [30, 40, 0, 0]
+  annotateShapes(annCanvas1, coordinates, emotion, 'rgba(40,40,250,.2)')
+  annotateShapes(annCanvas2, coordinates, emotion, 'rgba(40,40,250,.2)')
+  annotateShapes(txtCanvas, cornerCoordinates, emotion, colors_dict[emotion])
+  console.log(`exec time ${Date.now() - begin} -- annotateEmotionShapes`)
 }
 
-// Function to convert URI to Imagedata
-function convertURIToImageData(URI) {
-    return new Promise(function (resolve, reject) {
-        if (URI == null) return reject();
-        var canvas = document.createElement('canvas'),
-            context = canvas.getContext('2d'),
-            image = new Image();
-        image.addEventListener('load', function () {
-            canvas.width = image.width;
-            canvas.height = image.height;
-            context.drawImage(image, 0, 0, canvas.width, canvas.height);
-            resolve(context.getImageData(0, 0, canvas.width, canvas.height));
-        }, false);
-        image.src = URI;
-    });
+async function getPrediction(face) {
+  // predicts a batch of samples
+  // model.predictOnBatch(tf.ones([8, 10])).print();
+  let pixels = snapImageData(face)
+  let tensor = prepareTensor(pixels);
+  let begin = Date.now();
+  let prediction = await model.predict(tensor);
+  console.log(`exec time ${Date.now() - begin} -- getPrediction`)
+  let indexMax = indexOfMax(prediction.dataSync())
+  emotion = prediction_dict[indexMax]
+  annotateEmotionShapes(face, emotion)
+}
+
+function snapImageData(face) {
+  let begin = Date.now();
+  let context = outputCanvas.getContext('2d')
+  let pixels = context.getImageData(face.x, face.y, face.width, face.height);
+  console.log(`exec time ${Date.now() - begin} -- snapImageData`)
+  return pixels
+}
+
+function prepareTensor(pixel_array) {
+  let begin = Date.now();
+  let tensor = tf.browser.fromPixels(pixel_array, 1)
+  tensor = tf.image.resizeBilinear(tensor.div(255), [48, 48]);
+  tensor = tensor.expandDims(0);
+  console.log(`exec time ${Date.now() - begin} -- prepareTensor`)
+  return tensor
 }
 
 // Function to get the index of the maximum value of an array
 function indexOfMax(arr) {
+  let begin = Date.now();
     if (arr.length === 0) {
         return -1;
     }
@@ -68,5 +76,6 @@ function indexOfMax(arr) {
             max = arr[i];
         }
     }
+    console.log(`exec time ${Date.now() - begin} -- indexOfMax`)
     return maxIndex;
 }
