@@ -14,6 +14,13 @@ const colors_dict = {
     "Neutral": 'rgba(150,150,150)'
 };
 
+const colors_dict_opague = {
+    "Sad": 'rgba(250,20,60, 0.2)',
+    "Happy": 'rgba(0,170,0, 0.2)',
+    "Surprised": 'rgba(0,0,250, 0.2)',
+    "Neutral": 'rgba(150,150,150, 0.2)'
+};
+
 //Function to load model
 async function loadModel() {
   let begin = Date.now();
@@ -22,35 +29,60 @@ async function loadModel() {
   console.log(`exec time ${Date.now() - begin} -- loadModel`)
 }
 
-function annotateEmotionShapes(face, emotion){
+function annotateEmotionShapes(facesArray, emotionsArray){
   let begin = Date.now();
-  coordinates = [face.x, face.y, face.width, face.height]
-  cornerCoordinates = [30, 40, 0, 0]
-  annotateShapes(annCanvas1, coordinates, emotion, 'rgba(40,40,250,.2)')
-  annotateShapes(annCanvas2, coordinates, emotion, 'rgba(40,40,250,.2)')
-  annotateShapes(txtCanvas, cornerCoordinates, emotion, colors_dict[emotion])
+  let s1 = new CanvasState(txtCanvas);
+  let s2 = new CanvasState(annCanvas);
+  s1.addShape(new Shape(30, 40, 0, 0, colors_dict[emotionsArray[0]], emotionsArray[0]));
+
+  for (let i = 0; i < facesArray.length; ++i) {
+    let face = facesArray[i]
+    s2.addShape(new Shape(face.x,
+                          face.y,
+                          face.width,
+                          face.height,
+                          colors_dict_opague[emotionsArray[i]],
+                          emotionsArray[i]));
+  }
   console.log(`exec time ${Date.now() - begin} -- annotateEmotionShapes`)
 }
 
-async function getPrediction(face) {
-  // predicts a batch of samples
-  // model.predictOnBatch(tf.ones([8, 10])).print();
-  let pixels = snapImageData(face)
-  let tensor = prepareTensor(pixels);
+async function getPrediction(facesArray) {
   let begin = Date.now();
-  let prediction = await model.predict(tensor);
-  console.log(`exec time ${Date.now() - begin} -- getPrediction`)
-  let indexMax = indexOfMax(prediction.dataSync())
-  emotion = prediction_dict[indexMax]
-  annotateEmotionShapes(face, emotion)
+  let tensorsArray = []
+  let emotionsArray = []
+  let predArray = []
+  let pixelsArray = snapImageData(facesArray)
+
+  pixelsArray.forEach(function(pixels) {
+    tensorsArray.push(prepareTensor(pixels))
+  });
+  tensorsArray.forEach(function(tensor) {
+    predArray.push(callModel(tensor))
+  });
+  predArray.forEach(function(prediction) {
+    let indexMax = indexOfMax(prediction.dataSync())
+    emotionsArray.push(prediction_dict[indexMax])
+  });
+  console.log(`exec time ${Date.now() - begin} -- get predictions`)
+  annotateEmotionShapes(facesArray, emotionsArray)
 }
 
-function snapImageData(face) {
+function callModel(tensor){
   let begin = Date.now();
+  return model.predict(tensor);
+  console.log(`exec time ${Date.now() - begin} -- call model`)
+}
+
+function snapImageData(facesArray) {
+  let begin = Date.now();
+  let pixelsArray = []
   let context = outputCanvas.getContext('2d')
-  let pixels = context.getImageData(face.x, face.y, face.width, face.height);
-  console.log(`exec time ${Date.now() - begin} -- snapImageData`)
-  return pixels
+  facesArray.forEach(function(face) {
+    pixelsArray.push(context.getImageData(face.x, face.y, face.width, face.height))
+  });
+  console.log(`exec time ${Date.now() - begin} -- iterate with snapping image data`)
+  return pixelsArray
 }
 
 function prepareTensor(pixel_array) {

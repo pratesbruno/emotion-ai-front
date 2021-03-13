@@ -1,6 +1,5 @@
 const video = document.getElementById("cam_input"); // let video ...
-const annCanvas1 = document.getElementById('annCanvas1')
-const annCanvas2 = document.getElementById('annCanvas2')
+const annCanvas = document.getElementById('annCanvas')
 const outputCanvas = document.getElementById('canvas_output')
 const txtCanvas = document.getElementById('txtCanvas')
 const faceCascadeFile = 'haarcascade_frontalface_default.xml'; // path to xml
@@ -22,6 +21,7 @@ function openCvReady() {
       let cropped = new cv.Mat();
       let cap = new cv.VideoCapture(cam_input);
       let faces = new cv.RectVector();
+      let facesArray = []
       let classifier = new cv.CascadeClassifier();
       let mSize = new cv.Size((video.height / 4), (video.width / 4));
       let utils = new Utils('errorMessage');
@@ -43,14 +43,17 @@ function openCvReady() {
         console.log(`exec time ${Date.now() - begin} -- ## until draw rectangles`)
         for (let i = 0; i < faces.size(); ++i) {
             face = faces.get(i);
+            facesArray.push(face)
             let point1 = new cv.Point(face.x, face.y);
             let point2 = new cv.Point(face.x + face.width, face.y + face.height);
             cv.rectangle(dst, point1, point2, [255, 0, 0, 255]);
         }
         console.log(`exec time ${Date.now() - begin} -- ## until predict`)
-        if (faces.size() > 0) {
-          getPrediction(faces.get(0))
+        if (facesArray.length > 0) {
+          getPrediction(facesArray)
           console.log(`${faces.size()} faces detected`)
+          console.log(`${facesArray.length} faces in array`)
+          facesArray = []
         }
         console.log(`exec time ${Date.now() - begin} -- ## until redraw`)
         cv.imshow("canvas_output", dst);
