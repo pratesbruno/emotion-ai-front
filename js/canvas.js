@@ -1,8 +1,3 @@
-function annotateShapes(annCanvas, crd, emotion, color) {
-    let s = new CanvasState(annCanvas);
-    s.addShape(new Shape(crd[0], crd[1], crd[2], crd[3], color, emotion));
-}
-
 function Shape(x, y, w, h, fill, key) {
     // This is a very simple and unsafe constructor. All we're doing is checking if the values exist.
     // "x || 0" just means "if there is a value for x, use that. Otherwise use 0."
