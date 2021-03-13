@@ -23,6 +23,7 @@ async function loadModel() {
 // Function to get prediction from a dataURL format
 function get_prediction(dataURL) {
     convertURIToImageData(dataURL).then(function (imageData) {
+
         let a = tf.browser.fromPixels(imageData, 1)
         a = a.div(255)
         let resized = tf.image.resizeBilinear(a, [48, 48]);
