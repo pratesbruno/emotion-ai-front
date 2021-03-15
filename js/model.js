@@ -23,80 +23,75 @@ const colors_dict_opague = {
 
 //Function to load model
 async function loadModel() {
-  let begin = Date.now();
-  console.log("loading model....");
-  model = await tf.loadLayersModel('saved_models/7813-bruno/model.json');
-  console.log(`exec time ${Date.now() - begin} -- loadModel`)
+    let begin = Date.now();
+    console.log("loading model....");
+    model = await tf.loadLayersModel('saved_models/7813-bruno/model.json');
+    console.log(`exec time ${Date.now() - begin}ms -- Model loaded`)
 }
 
-function annotateEmotionShapes(facesArray, emotionsArray){
-  let begin = Date.now();
-  let s1 = new CanvasState(txtCanvas);
-  let s2 = new CanvasState(annCanvas);
-  s1.addShape(new Shape(30, 40, 0, 0, colors_dict[emotionsArray[0]], emotionsArray[0]));
+function annotateEmotionShapes(facesArray, emotionsArray) {
+    let begin = Date.now();
+    let s1 = new CanvasState(txtCanvas);
+    let s2 = new CanvasState(annCanvas);
+    s1.addShape(new Shape(30, 40, 0, 0, colors_dict[emotionsArray[0]], emotionsArray[0]));
 
-  for (let i = 0; i < facesArray.length; ++i) {
-    let face = facesArray[i]
-    s2.addShape(new Shape(face.x,
-                          face.y,
-                          face.width,
-                          face.height,
-                          colors_dict_opague[emotionsArray[i]],
-                          emotionsArray[i]));
-  }
-  console.log(`exec time ${Date.now() - begin} -- annotateEmotionShapes`)
+    for (let i = 0; i < facesArray.length; ++i) {
+        let face = facesArray[i]
+        s2.addShape(new Shape(face.x,
+            face.y,
+            face.width,
+            face.height,
+            colors_dict_opague[emotionsArray[i]],
+            emotionsArray[i]));
+    }
 }
 
 async function getPrediction(facesArray) {
-  let begin = Date.now();
-  let tensorsArray = []
-  let emotionsArray = []
-  let predArray = []
-  let pixelsArray = snapImageData(facesArray)
+    let begin = Date.now();
+    let tensorsArray = []
+    let emotionsArray = []
+    let predArray = []
+    let pixelsArray = snapImageData(facesArray)
 
-  pixelsArray.forEach(function(pixels) {
-    tensorsArray.push(prepareTensor(pixels))
-  });
-  tensorsArray.forEach(function(tensor) {
-    predArray.push(callModel(tensor))
-  });
-  predArray.forEach(function(prediction) {
-    let indexMax = indexOfMax(prediction.dataSync())
-    emotionsArray.push(prediction_dict[indexMax])
-  });
-  console.log(`exec time ${Date.now() - begin} -- get predictions`)
-  annotateEmotionShapes(facesArray, emotionsArray)
+    pixelsArray.forEach(function (pixels) {
+        tensorsArray.push(prepareTensor(pixels))
+    });
+    tensorsArray.forEach(function (tensor) {
+        predArray.push(callModel(tensor))
+    });
+    predArray.forEach(function (prediction) {
+        let indexMax = indexOfMax(prediction.dataSync())
+        emotionsArray.push(prediction_dict[indexMax])
+    });
+    annotateEmotionShapes(facesArray, emotionsArray)
 }
 
-function callModel(tensor){
-  let begin = Date.now();
-  return model.predict(tensor);
-  console.log(`exec time ${Date.now() - begin} -- call model`)
+function callModel(tensor) {
+    let begin = Date.now();
+    return model.predict(tensor);
 }
 
 function snapImageData(facesArray) {
-  let begin = Date.now();
-  let pixelsArray = []
-  let context = outputCanvas.getContext('2d')
-  facesArray.forEach(function(face) {
-    pixelsArray.push(context.getImageData(face.x, face.y, face.width, face.height))
-  });
-  console.log(`exec time ${Date.now() - begin} -- iterate with snapping image data`)
-  return pixelsArray
+    let begin = Date.now();
+    let pixelsArray = []
+    let context = outputCanvas.getContext('2d')
+    facesArray.forEach(function (face) {
+        pixelsArray.push(context.getImageData(face.x, face.y, face.width, face.height))
+    });
+    return pixelsArray
 }
 
 function prepareTensor(pixel_array) {
-  let begin = Date.now();
-  let tensor = tf.browser.fromPixels(pixel_array, 1)
-  tensor = tf.image.resizeBilinear(tensor.div(255), [48, 48]);
-  tensor = tensor.expandDims(0);
-  console.log(`exec time ${Date.now() - begin} -- prepareTensor`)
-  return tensor
+    let begin = Date.now();
+    let tensor = tf.browser.fromPixels(pixel_array, 1)
+    tensor = tf.image.resizeBilinear(tensor.div(255), [48, 48]);
+    tensor = tensor.expandDims(0);
+    return tensor
 }
 
 // Function to get the index of the maximum value of an array
 function indexOfMax(arr) {
-  let begin = Date.now();
+    let begin = Date.now();
     if (arr.length === 0) {
         return -1;
     }
@@ -108,6 +103,5 @@ function indexOfMax(arr) {
             max = arr[i];
         }
     }
-    console.log(`exec time ${Date.now() - begin} -- indexOfMax`)
     return maxIndex;
 }
