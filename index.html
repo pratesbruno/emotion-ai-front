@@ -49,15 +49,17 @@
                 href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i
                     class="fa fa-bars"></i></a>
             <a href="#" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
-            <a href="#webcam" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Webcam</a>
-            <a href="#pred" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Prediction</a>
+            <a href="#prediction"
+                class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Prediction</a>
+            <a href="#facedetection" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Face
+                detection</a>
             <a href="#aboutus" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">About us</a>
         </div>
 
         <!-- Navbar on small screens -->
         <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
-            <a href="#webcam" class="w3-bar-item w3-button w3-padding-large">Webcam</a>
-            <a href="#pred" class="w3-bar-item w3-button w3-padding-large">Prediction</a>
+            <a href="#prediction" class="w3-bar-item w3-button w3-padding-large">Webcam</a>
+            <a href="#facedetection" class="w3-bar-item w3-button w3-padding-large">Prediction</a>
             <a href="#aboutus" class="w3-bar-item w3-button w3-padding-large">About us</a>
         </div>
     </div>
@@ -69,7 +71,7 @@
     </header>
 
     <!-- First Grid -->
-    <div class="w3-row-padding w3-padding-64 w3-container" id='webcam'>
+    <div class="w3-row-padding w3-padding-64 w3-container" id='prediction'>
         <div class="w3-content">
             <div class="w3-twothird">
                 <h1>How are you feeling?</h1>
@@ -94,7 +96,7 @@
     </div>
 
     <!-- Second Grid -->
-    <div class="w3-row-padding w3-light-grey w3-padding-32 w3-container" id='pred'>
+    <div class="w3-row-padding w3-light-grey w3-padding-32 w3-container" id='facedetection'>
         <div class="w3-content">
             <div class="w3-twothird">
                 <h1>Face detection</h1>
@@ -113,6 +115,9 @@
                     into our convolutional neural network, which we pretrained using Python. The saved pretrained model
                     was transformed to a json file, which allowed us to
                     use it in TensorFlow.js. TensorFlow.js gets executed directly your browser for faster predictions.
+                    The code can be accessed in our <a href="https://github.com/pratesbruno/emotion-ai-front"
+                        target="_blank">project
+                        repository.</a>
                 </p>
             </div>
         </div>
@@ -151,4 +156,5 @@
         onload="loadModel();"></script>
     <script async src="js/opencv.js" onload="openCvReady();"></script>
 </body>
+
 </html>
